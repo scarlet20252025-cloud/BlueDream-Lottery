@@ -6,7 +6,6 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,6 +33,7 @@ public class LotteryTabCompleter implements TabCompleter {
                 suggestions.add("give");
                 suggestions.add("reload");
                 suggestions.add("lang");
+                suggestions.add("cleanup");
                 suggestions.add("setblock");
                 suggestions.add("removeblock");
             }

@@ -70,18 +70,17 @@ public class AnimationEngine {
         int currentPity = plugin.getPlayerDataManager().getPity(uuid, pool.getName());
         int pityCount = pool.getPityCount();
         
-        LotteryItem grandPrize = null;
+        java.util.List<LotteryItem> grandPrizes = new java.util.ArrayList<>();
         for (LotteryItem li : pool.getItems()) {
             if (li.isGrandPrize()) {
-                grandPrize = li;
-                break;
+                grandPrizes.add(li);
             }
         }
 
         for (int i = 0; i < count; i++) {
             LotteryItem res = null;
-            if (grandPrize != null && currentPity + 1 >= pityCount) {
-                res = grandPrize;
+            if (!grandPrizes.isEmpty() && currentPity + 1 >= pityCount) {
+                res = grandPrizes.get(random.nextInt(grandPrizes.size()));
                 currentPity = 0;
             } else {
                 res = doWeightSelection();

@@ -262,4 +262,28 @@ public class Adapter {
             item.setItemMeta(meta);
         } catch (Throwable ignored) {}
     }
+
+    public static boolean isLotteryChest(ItemStack item, String poolName, LotteryPool pool) {
+        if (item == null || item.getType() != pool.getChestMaterial() || !item.hasItemMeta()) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (!meta.hasDisplayName()) return false;
+
+        LanguageManager lm = BlueDreamLottery.getInstance().getLanguageManager();
+        String prefix = lm.getMessage("chest_name_prefix");
+        String oldPrefix = "§6§l奖池宝箱: §f";
+        String enPrefix = "§6§lLottery Chest: §f";
+        String displayName = meta.getDisplayName();
+
+        if (!(displayName.equals(prefix + poolName) || displayName.equals(oldPrefix + poolName) || displayName.equals(enPrefix + poolName))) {
+            return false;
+        }
+
+        if (pool.getChestItem() != null && hasCustomModelData(pool.getChestItem())) {
+            if (getCustomModelData(pool.getChestItem()) != getCustomModelData(item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

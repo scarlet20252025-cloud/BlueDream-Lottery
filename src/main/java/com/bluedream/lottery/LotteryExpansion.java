@@ -39,26 +39,26 @@ public class LotteryExpansion extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, @NotNull String params) {
         if (player == null) return "";
 
-        // %bluedream_pity_<pool>%
+        // %bluedream_pity_<奖池>%
         if (params.startsWith("pity_")) {
             String poolName = params.substring(5);
             return String.valueOf(plugin.getPlayerDataManager().getPity(player.getUniqueId(), poolName));
         }
 
-        // %bluedream_max_pity_<pool>%
+        // %bluedream_max_pity_<奖池>%
         if (params.startsWith("max_pity_")) {
             String poolName = params.substring(9);
             LotteryPool pool = plugin.getManager().getPool(poolName);
             return pool != null ? String.valueOf(pool.getPityCount()) : "0";
         }
 
-        // %bluedream_total_draws_<pool>%
+        // %bluedream_total_draws_<奖池>%
         if (params.startsWith("total_draws_")) {
             String poolName = params.substring(12);
             return String.valueOf(plugin.getPlayerDataManager().getTotalDraws(player.getUniqueId(), poolName));
         }
 
-        // %bluedream_total_draws%
+        // %bluedream_总抽奖次数%
         if (params.equals("total_draws")) {
             return String.valueOf(plugin.getPlayerDataManager().getGlobalTotalDraws(player.getUniqueId()));
         }

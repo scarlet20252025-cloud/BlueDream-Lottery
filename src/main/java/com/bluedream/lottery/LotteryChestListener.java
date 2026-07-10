@@ -1,6 +1,5 @@
 package com.bluedream.lottery;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,16 +44,8 @@ public class LotteryChestListener implements Listener {
 
                         LotteryPool pool = plugin.getManager().getPool(poolName);
                         if (pool != null) {
-                            if (item.getType() != pool.getChestMaterial()) {
+                            if (!Adapter.isLotteryChest(item, poolName, pool)) {
                                 return;
-                            }
-                            
-                            if (pool.getChestItem() != null && Adapter.hasCustomModelData(pool.getChestItem())) {
-                                int requiredData = Adapter.getCustomModelData(pool.getChestItem());
-                                int currentData = Adapter.getCustomModelData(item);
-                                if (requiredData != currentData) {
-                                    return;
-                                }
                             }
                             
                             plugin.getPlayGUI().open(player, pool);

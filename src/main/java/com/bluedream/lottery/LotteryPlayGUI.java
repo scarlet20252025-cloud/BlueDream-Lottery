@@ -40,10 +40,10 @@ public class LotteryPlayGUI implements Listener {
         for (int i = 45; i < 54; i++) inv.setItem(i, glass);
 
         if (page > 0) {
-            inv.setItem(45, createItem(Adapter.getMaterial("ARROW", "ARROW"), "§a上一页", "§7当前第 " + (page + 1) + " 页"));
+            inv.setItem(45, createItem(Adapter.getMaterial("ARROW", "ARROW"), lm.getMessage("page_prev"), lm.getMessage("page_current").replace("{page}", String.valueOf(page + 1))));
         }
         if ((page + 1) * 45 < pool.getItems().size()) {
-            inv.setItem(53, createItem(Adapter.getMaterial("ARROW", "ARROW"), "§a下一页", "§7当前第 " + (page + 1) + " 页"));
+            inv.setItem(53, createItem(Adapter.getMaterial("ARROW", "ARROW"), lm.getMessage("page_next"), lm.getMessage("page_current").replace("{page}", String.valueOf(page + 1))));
         }
 
         int pity = plugin.getPlayerDataManager().getPity(player.getUniqueId(), pool.getName());
@@ -194,32 +194,15 @@ public class LotteryPlayGUI implements Listener {
         ItemStack[] contents = player.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
-            if (item != null && item.getType() == pool.getChestMaterial() && item.hasItemMeta()) {
-                ItemMeta meta = item.getItemMeta();
-                if (meta.hasDisplayName()) {
-                    LanguageManager lm = plugin.getLanguageManager();
-                    String prefix = lm.getMessage("chest_name_prefix");
-                    String oldPrefix = "§6§l奖池宝箱: §f";
-                    String enPrefix = "§6§lLottery Chest: §f";
-                    String displayName = meta.getDisplayName();
-                    
-                    if (displayName.equals(prefix + poolName) || displayName.equals(oldPrefix + poolName) || displayName.equals(enPrefix + poolName)) {
-                        if (pool.getChestItem() != null && Adapter.hasCustomModelData(pool.getChestItem())) {
-                            if (Adapter.getCustomModelData(pool.getChestItem()) != Adapter.getCustomModelData(item)) {
-                                continue;
-                            }
-                        }
-                        
-                        int amount = item.getAmount();
-                        if (amount > remaining) {
-                            item.setAmount(amount - remaining);
-                            return true;
-                        } else {
-                            remaining -= amount;
-                            player.getInventory().setItem(i, null);
-                            if (remaining <= 0) return true;
-                        }
-                    }
+            if (Adapter.isLotteryChest(item, poolName, pool)) {
+                int amount = item.getAmount();
+                if (amount > remaining) {
+                    item.setAmount(amount - remaining);
+                    return true;
+                } else {
+                    remaining -= amount;
+                    player.getInventory().setItem(i, null);
+                    if (remaining <= 0) return true;
                 }
             }
         }
@@ -233,23 +216,8 @@ public class LotteryPlayGUI implements Listener {
         int total = 0;
         ItemStack[] contents = player.getInventory().getContents();
         for (ItemStack item : contents) {
-            if (item != null && item.getType() == pool.getChestMaterial() && item.hasItemMeta()) {
-                ItemMeta meta = item.getItemMeta();
-                if (meta.hasDisplayName()) {
-                    LanguageManager lm = plugin.getLanguageManager();
-                    String prefix = lm.getMessage("chest_name_prefix");
-                    String oldPrefix = "§6§l奖池宝箱: §f";
-                    String enPrefix = "§6§lLottery Chest: §f";
-                    String displayName = meta.getDisplayName();
-                    if (displayName.equals(prefix + poolName) || displayName.equals(oldPrefix + poolName) || displayName.equals(enPrefix + poolName)) {
-                        if (pool.getChestItem() != null && Adapter.hasCustomModelData(pool.getChestItem())) {
-                            if (Adapter.getCustomModelData(pool.getChestItem()) != Adapter.getCustomModelData(item)) {
-                                continue;
-                            }
-                        }
-                        total += item.getAmount();
-                    }
-                }
+            if (Adapter.isLotteryChest(item, poolName, pool)) {
+                total += item.getAmount();
             }
         }
         return total >= count;

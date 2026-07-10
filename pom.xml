@@ -6,13 +6,13 @@
 
     <groupId>com.bluedream</groupId>
     <artifactId>BlueDream_Lottery</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.6</version>
     <packaging>jar</packaging>
 
     <name>BlueDream-Lottery</name>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -88,6 +88,12 @@
             <version>42.6.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.2.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -120,6 +126,10 @@
                                 <relocation>
                                     <pattern>org.slf4j</pattern>
                                     <shadedPattern>com.bluedream.lottery.libs.slf4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>com.bluedream.lottery.libs.bstats</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

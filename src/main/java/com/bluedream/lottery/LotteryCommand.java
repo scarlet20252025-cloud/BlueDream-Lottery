@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 
 public class LotteryCommand implements CommandExecutor {
     private final BlueDreamLottery plugin;
@@ -272,6 +273,16 @@ public class LotteryCommand implements CommandExecutor {
                 sender.sendMessage(plugin.getLanguageManager().getMessage("reload_success"));
                 break;
 
+            case "cleanup":
+                if (sender instanceof Player && !sender.hasPermission("bluedream.lottery.admin")) return true;
+                if (plugin.getHologramManager() != null) {
+                    int removed = plugin.getHologramManager().globalCleanup(true);
+                    sender.sendMessage("§a已清理 " + removed + " 个悬浮实体。");
+                } else {
+                    sender.sendMessage("§c全息图管理器未启用。");
+                }
+                break;
+
             case "lang":
                 if (sender instanceof Player && !sender.hasPermission("bluedream.lottery.admin")) return true;
                 if (args.length < 2) {
@@ -306,6 +317,7 @@ public class LotteryCommand implements CommandExecutor {
         player.sendMessage(lm.getMessage("help_setblock"));
         player.sendMessage(lm.getMessage("help_removeblock"));
         player.sendMessage(lm.getMessage("help_stats"));
+        player.sendMessage(lm.getMessage("help_cleanup"));
         player.sendMessage(lm.getMessage("help_reload"));
         player.sendMessage(lm.getMessage("help_lang"));
     }

@@ -6,7 +6,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LotteryManager {
@@ -191,6 +190,10 @@ public class LotteryManager {
                 e.printStackTrace();
             }
         });
+
+        if (plugin.getHologramManager() != null) {
+            plugin.getHologramManager().refreshPoolHolograms(pool.getName());
+        }
     }
 
     public void createPool(String name) {

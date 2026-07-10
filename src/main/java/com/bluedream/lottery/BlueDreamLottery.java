@@ -1,6 +1,7 @@
 package com.bluedream.lottery;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -45,6 +46,7 @@ public class BlueDreamLottery extends JavaPlugin {
             playerDataManager = new PlayerDataManager(this);
             hologramManager = new HologramManager(this);
             hologramManager.updateAllHolograms();
+            getServer().getPluginManager().registerEvents(hologramManager, this);
             adminGUI = new LotteryAdminGUI(this);
             playGUI = new LotteryPlayGUI(this);
             statsGUI = new LotteryStatsGUI(this);
@@ -52,13 +54,14 @@ public class BlueDreamLottery extends JavaPlugin {
             getServer().getPluginManager().registerEvents(adminGUI, this);
             getServer().getPluginManager().registerEvents(playGUI, this);
             getServer().getPluginManager().registerEvents(statsGUI, this);
-            getServer().getPluginManager().registerEvents(new GlobalListener(this), this);
+            GlobalListener globalListener = new GlobalListener(this);
+            getServer().getPluginManager().registerEvents(globalListener, this);
             getServer().getPluginManager().registerEvents(new ChatInputListener(this), this);
             getServer().getPluginManager().registerEvents(new LotteryChestListener(this), this);
             
             try {
                 Class.forName("org.bukkit.event.block.BlockExplodeEvent");
-                getServer().getPluginManager().registerEvents(new ExplosionListener(this), this);
+                getServer().getPluginManager().registerEvents(new ExplosionListener(this, globalListener), this);
             } catch (Exception ignored) {}
             
             if (getCommand("lottery") != null) {
@@ -73,6 +76,10 @@ public class BlueDreamLottery extends JavaPlugin {
             }
 
             new ParticleTask(this).runTaskTimer(this, 20L, 4L);
+
+            // 初始化数据统计
+            int pluginId = 32513;
+            new Metrics(this, pluginId);
 
             getLogger().info(languageManager.getMessage("plugin_loaded").replaceAll("§.", ""));
         } catch (Throwable t) {

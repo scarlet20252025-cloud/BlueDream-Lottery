@@ -35,6 +35,7 @@ help_play_cmd: "&f/lt play <名字> <次数> &7- 直接开始抽奖 (单抽/十�
 help_setblock: "&f/lt setblock <名字> &7- 设置当前准心方块为抽奖入口"
 help_removeblock: "&f/lt removeblock &7- 移除当前准心方块的抽奖设置"
 help_stats: "&f/lt stats &7- 查看统计与排行榜"
+help_cleanup: "&f/lt cleanup &7- 清理残留悬浮实体"
 help_reload: "&f/lt reload &7- 重载配置文件"
 help_lang: "&f/lt lang <zh_cn|en_us> &7- 切换语言"
 
@@ -215,3 +216,11 @@ item_removed: "&e已从奖池中移除该物品。"
 key_item_set: "&a已将点击的物品设为该奖池的抽奖钥匙！"
 chest_material_set: "&a已将奖池宝箱材质设置为: &e{material}"
 item_added: "&a已将物品添加进奖池。"
+
+usage_give: "&c用法: /lottery give <奖池名字> <数量> [玩家]"
+usage_removeblock: "&c用法: /lottery removeblock"
+usage_lang: "&c用法: /lt lang <zh_cn|en_us>"
+
+page_prev: "&a上一页"
+page_next: "&a下一页"
+page_current: "&7当前第 {page} 页"
